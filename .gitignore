@@ -1,0 +1,96 @@
+## Rider-specific
+.idea/
+*.sln.iml
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Tye
+.tye/
+
+# Azure Pipelines
+.vspscc
+*.vspx
+
+## Rider Cache
+.idea/
+.idea/*
+
+## VS Code (in case you use it too)
+.vscode/
+
+## Paket dependency manager
+.paket/
+paket-files/
+
+## DotCover
+*.dotCover
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+project.assets.json
+PackageConfigs/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Logs
+*.log
+
+# Others
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Rider local history
+.idea/.idea.IC/
+.idea/.idea.SharedIndexes/
+
+# JetBrains Rider Caches
+.idea/.idea.Rider/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/
+.idea/httpRequests/
+
+# Local test result
+TestResults/
