@@ -9,6 +9,7 @@ public class DbInitializer
 {
     public static async Task InitDb(WebApplication app)
     {
+        // use MongoDB.Entities
         await DB.InitAsync("SearchDb",
             MongoClientSettings.FromConnectionString(app.Configuration.GetConnectionString("MongoDbConnectionString")));
 // before creating the index, make sure the Item collection is created
