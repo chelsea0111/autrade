@@ -14,4 +14,16 @@ var app = builder.Build();
 app.UseAuthorization();
 app.MapControllers();
 
+// Initialize the database - seed data
+try
+{
+    DbInitializer.InitDb(app);
+}
+catch (Exception e)
+{
+    Console.WriteLine(e);
+    throw;
+}
+
+
 app.Run();
