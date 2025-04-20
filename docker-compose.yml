@@ -8,8 +8,19 @@ services:
     #  mount the pgdata volume to the container
     volumes:
       - pgdata:/var/lib/postgresql/data
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+
 # define a docker volumn called pgdata
 volumes:
-  pgdata:        
-
+  pgdata:
+  mongodata:
     
