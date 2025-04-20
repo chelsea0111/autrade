@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    #  mount the pgdata volume to the container
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+# define a docker volumn called pgdata
+volumes:
+  pgdata:        
+
+    
