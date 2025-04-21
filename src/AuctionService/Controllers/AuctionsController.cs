@@ -2,6 +2,7 @@ using AuctionService.Data;
 using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,24 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<AuctionDto>>> GetAllAuction()
+    public async Task<ActionResult<List<AuctionDto>>> GetAllAuction(string date)
     {
-        Auction[] auctions = await _context.Auctions
-            .Include(x => x.Item)
-            .OrderBy(x => x.Item.Make)
-            .ToArrayAsync();
-        return _mapper.Map<List<AuctionDto>>(auctions);
+        IQueryable<Auction> query = _context.Auctions.OrderBy(x => x.Item.Make).AsQueryable();
+        if (!string.IsNullOrEmpty(date))
+        {
+            query = query.Where(x => x.UpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
+        }
+
+        // Auction[] auctions = await _context.Auctions
+        //     .Include(x => x.Item)
+        //     .OrderBy(x => x.Item.Make)
+        //     .ToArrayAsync();
+        // return _mapper.Map<List<AuctionDto>>(auctions);
+        
+        // map auctions in db to auctionDtos directly. Rather than new AuctionDto({...})
+        // It will filter column in db later.
+        // ToListAsync() execute the query and return a list of AuctionDto
+        return await query.ProjectTo<AuctionDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
     [HttpGet("{id}")]
