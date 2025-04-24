@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using MongoDB.Entities;
 using Polly;
 using Polly.Extensions.Http;
+using SearchService.Consumers;
 using SearchService.Data;
 using SearchService.Models;
 using SearchService.Services;
@@ -11,12 +12,24 @@ using SearchService.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Add HttpClient for SearchService, and set up a retry policy
 builder.Services.AddHttpClient<AuctionSvcHttpClient>().AddPolicyHandler(GetPolicy());
 // AddMassTransit() to register the MassTransit services
-builder.Services.AddMassTransit(x => { x.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); }); });
+builder.Services.AddMassTransit(x =>
+{
+    // register the consumer to MassTransit (fanout by default)
+    // Once a AuctionCreated event is published, it will be forwarded to the Contracts:AuctionCreated exchange
+    // Then from exchange Contracts:AuctionCreated -> exchange:  search-auction-created
+    // Then sent to queue: search-auction-created which can be consumed by the SearchService
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false)); //  search-auction-created
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 
