@@ -14,6 +14,7 @@ public class DbInitializer
 
     private static void SeedData(AuctionDbContext context)
     {
+        // check if the database exists, and create table, like `dotnet ef database update`
         context.Database.Migrate();
         // check if the database has been seeded
         if (context.Auctions.Any())

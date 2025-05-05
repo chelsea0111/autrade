@@ -63,12 +63,13 @@ public class AuctionsController : ControllerBase
         Auction auction = _mapper.Map<Auction>(auctionDto);
         // TODO: add current user as seller
         auction.Seller = "test";
+        
         _context.Add(auction);
-        bool result = await _context.SaveChangesAsync() > 0;
-
         // publish AuctionCreated event
         var newAuction = _mapper.Map<AuctionDto>(auction);
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+        
+        bool result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
         {
