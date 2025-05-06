@@ -1,4 +1,5 @@
 using System.Net;
+using Contracts;
 using MassTransit;
 using MongoDB.Driver;
 using MongoDB.Entities;
@@ -27,6 +28,12 @@ builder.Services.AddMassTransit(x =>
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false)); //  search-auction-created
     x.UsingRabbitMq((context, cfg) =>
     {
+        // apply the retry configuration to AuctionCreatedConsumer and search-auction-created queue
+        cfg.ReceiveEndpoint("search-auction-created", e =>
+        {
+            e.UseMessageRetry(r => r.Interval(5, 5));
+            e.ConfigureConsumer<AuctionCreatedConsumer>(context);
+        });
         cfg.ConfigureEndpoints(context);
     });
 });
