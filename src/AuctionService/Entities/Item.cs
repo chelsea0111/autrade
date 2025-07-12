@@ -13,7 +13,7 @@ public class Item
     public int Mileage { get; set; }
     public string ImageUrl { get; set; }
 
-    // EF: nav properties
+    // EF: nav properties, set the relationship between Item and Auction
     public Auction Auction { get; set; }
     public Guid AuctionId { get; set; }
 }
