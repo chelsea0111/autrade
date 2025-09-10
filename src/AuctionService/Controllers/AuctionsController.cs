@@ -63,12 +63,12 @@ public class AuctionsController : ControllerBase
         Auction auction = _mapper.Map<Auction>(auctionDto);
         // TODO: add current user as seller
         auction.Seller = "test";
-        
+
         _context.Add(auction);
         // publish AuctionCreated event
         var newAuction = _mapper.Map<AuctionDto>(auction);
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
-        
+
         bool result = await _context.SaveChangesAsync() > 0;
 
         if (!result)
@@ -95,6 +95,9 @@ public class AuctionsController : ControllerBase
         // context has tracking auctions and items,
         // so if there is a change, ef core will mark them as "modified",
         // and then generate sql statements to save these changes;
+
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
+
         bool result = await _context.SaveChangesAsync() > 0;
         if (!result)
         {
@@ -111,6 +114,9 @@ public class AuctionsController : ControllerBase
         if (auction == null) return NotFound();
         // TODO: check seller is current user
         _context.Auctions.Remove(auction);
+        
+        await _publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() });
+        
         var result = await _context.SaveChangesAsync() > 0;
         if (!result)
         {

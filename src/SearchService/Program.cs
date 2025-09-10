@@ -25,7 +25,7 @@ builder.Services.AddMassTransit(x =>
     // Then from exchange Contracts:AuctionCreated -> exchange:  search-auction-created
     // Then sent to queue: search-auction-created which can be consumed by the SearchService
     x.AddConsumersFromNamespaceContaining<AuctionCreatedConsumer>();
-    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false)); //  search-auction-created
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false)); //  queue: search-auction-created
     x.UsingRabbitMq((context, cfg) =>
     {
         // apply the retry configuration to AuctionCreatedConsumer and search-auction-created queue
