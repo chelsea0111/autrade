@@ -28,6 +28,12 @@ builder.Services.AddMassTransit(x =>
     x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false)); //  queue: search-auction-created
     x.UsingRabbitMq((context, cfg) =>
     {
+        cfg.Host(builder.Configuration["RabbitMq:Host"], "/",
+            h =>
+            {
+                h.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+                h.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+            });
         // apply the retry configuration to AuctionCreatedConsumer and search-auction-created queue
         cfg.ReceiveEndpoint("search-auction-created", e =>
         {
