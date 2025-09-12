@@ -1,8 +1,12 @@
 import React from "react";
 import Search from "./search";
 import Logo from "./logo";
+import LoginButton from "./login-button";
+import { getCurrentUser } from "../actions/auth-actions";
+import { UserActions } from "./user-actions";
 
-const NavBar = () => {
+const NavBar = async () => {
+  const user = await getCurrentUser();
   return (
     <header
       className="
@@ -11,7 +15,7 @@ const NavBar = () => {
     >
       <Logo />
       <Search />
-      <div>Login</div>
+      {user ? <UserActions user={user} /> : <LoginButton />}
     </header>
   );
 };
