@@ -49,7 +49,7 @@ public class SearchController : ControllerBase
             query.Match(x => x.Winner == searchParams.Winner);
         }
 
-        query.PageNumber(searchParams.PageNum);
+        query.PageNumber(searchParams.PageNumber);
         query.PageSize(searchParams.PageSize);
         (IReadOnlyList<Item> Results, long TotalCount, int PageCount) result = await query.ExecuteAsync();
         return Ok(new

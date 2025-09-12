@@ -1,7 +1,9 @@
+import AuctionList from "./auctions/auction-list";
+
 export default function Home() {
   return (
     <div>
-      <h1 className="text-xl font-semibold">Autrade</h1>
+      <AuctionList />
     </div>
   );
 }
