@@ -6,6 +6,7 @@ COPY Carsties.sln ./
 COPY src/AuctionService/AuctionService.csproj ./src/AuctionService/
 COPY src/Contracts/Contracts.csproj ./src/Contracts/
 
+
 RUN dotnet restore ./src/AuctionService/AuctionService.csproj
 
 COPY . .

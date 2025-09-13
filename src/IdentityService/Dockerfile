@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY Carsties.sln ./
 COPY src/IdentityService/IdentityService.csproj ./src/IdentityService/
+COPY src/Contracts/Contracts.csproj ./src/Contracts/
 
 RUN dotnet restore ./src/IdentityService/IdentityService.csproj
 
