@@ -95,9 +95,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
+      - IssuerUri=http://id.autrade.local
+      - ClientApp=http://app.autrade.local
       - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Username=postgres;Password=postgres;Database=identity
-    ports:
-      - 5001:80
+      - VIRTUAL_HOST=id.autrade.local
     depends_on:
       postgres:
         condition: service_healthy
@@ -109,6 +110,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
+      - ClientApp=http://app.autrade.local
+      - VIRTUAL_HOST=api.autrade.local
     ports:
       - 6001:80
   bid-svc:
@@ -141,6 +144,29 @@ services:
       - RabbitMq__Host=rabbitmq
     ports:
       - 7004:80
+  web-app:
+    image: chelseax/web-app:latest
+    build:
+      context: .
+      dockerfile: frontend/web-app/Dockerfile
+    volumes:
+      - /var/lib/web/data
+    environment:
+      - AUTH_SECRET="kDlS1F3j5D7l9KIV4g5LM0U6Qzn9DokWSe+ieDS430o="
+      - API_URL=http://gateway-svc/
+      - ID_URL=http://id.autrade.local
+      - ID_URL_INTERNAL=http://identity-svc
+      - AUTH_URL=http://app.autrade.local
+      - AUTH_URL_INTERNAL=http://web-app:3000
+      - VIRTUAL_HOST=app.autrade.local
+      - VIRTUAL_PORT=3000
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
         
         
     # define a docker volumn called pgdata
