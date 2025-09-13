@@ -4,7 +4,7 @@ import "./globals.css";
 import NavBar from "./nav/nav-bar";
 import ToasterProvider from "./providers/toaster-provider";
 import SignalRProvider from "./providers/signalr-provider";
-import { getCurrentUser } from "./actions/auth-actions";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +26,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+  // const user = await getCurrentUser();
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToasterProvider />
-        <NavBar />
-        <main className="container mx-auto px-5 pt-10">
-          <SignalRProvider user={user}>{children}</SignalRProvider>
-        </main>
+        <SessionProvider>
+          <ToasterProvider />
+          <NavBar />
+          <main className="container mx-auto px-5 pt-10">
+            <SignalRProvider>{children}</SignalRProvider>
+          </main>
+        </SessionProvider>
       </body>
     </html>
   );

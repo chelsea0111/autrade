@@ -1,12 +1,16 @@
+"use client";
 import React from "react";
 import Search from "./search";
 import Logo from "./logo";
 import LoginButton from "./login-button";
-import { getCurrentUser } from "../actions/auth-actions";
 import { UserActions } from "./user-actions";
+import { useSession } from "next-auth/react";
 
-const NavBar = async () => {
-  const user = await getCurrentUser();
+const NavBar = () => {
+  // const user = await getCurrentUser();
+  const session = useSession();
+  // const user = session.data?.user;
+
   return (
     <header
       className="
@@ -15,7 +19,11 @@ const NavBar = async () => {
     >
       <Logo />
       <Search />
-      {user ? <UserActions user={user} /> : <LoginButton />}
+      {session.data?.user ? (
+        <UserActions user={session.data?.user} />
+      ) : (
+        <LoginButton />
+      )}
     </header>
   );
 };
