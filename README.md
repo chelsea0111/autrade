@@ -4,7 +4,7 @@
 ![Next.js](https://img.shields.io/badge/Next.js-15.3-black)
 
 Autrade is a modern microservices-based online auction platform for automobiles. Built with .NET microservices and Next.js frontend, it provides a seamless experience for buying and selling vehicles through real-time auctions.
-
+![img.png](docs/images/img.png)
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
@@ -32,31 +32,7 @@ The system uses a microservices architecture to ensure scalability, resilience, 
 ## 🏗️ System Architecture
 
 Autrade follows a microservices architecture with the following components:
-
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  Frontend   │     │   Gateway   │     │  Identity   │
-│  (Next.js)  │────▶│   Service   │────▶│   Service   │
-└─────────────┘     └─────────────┘     └─────────────┘
-                           │
-                           │
-                           ▼
-       ┌─────────┬─────────┴─────────┬─────────┐
-       │         │                   │         │
-       ▼         ▼                   ▼         ▼
-┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-│   Auction   │ │   Bidding   │ │   Search    │ │ Notification│
-│   Service   │ │   Service   │ │   Service   │ │   Service   │
-└─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-       │                 │             │               │
-       └─────────────────┴─────────────┴───────────────┘
-                           │
-                           ▼
-                    ┌─────────────┐
-                    │  RabbitMQ   │
-                    │ (Message Bus)│
-                    └─────────────┘
-```
+![Untitled Diagram.jpg](docs/images/Untitled%20Diagram.jpg)
 
 - **Frontend (Next.js)**: User interface for the application
 - **Gateway Service**: API Gateway that routes requests to appropriate services
