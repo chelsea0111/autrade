@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY Carsties.sln ./
+COPY Autrade.sln ./
 COPY src/BiddingService/BiddingService.csproj ./src/BiddingService/
 COPY src/Contracts/Contracts.csproj ./src/Contracts/
 
